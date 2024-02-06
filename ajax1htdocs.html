@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+
+
+    <div>
+        我是一个上线的项目
+
+        <h1 id='h1txt'></h1>
+    </div>
+
+    <input id="input01" type="text" oninput="sendRequest()">
+
+    <!--
+        
+    -->
+
+    <!-- 
+
+
+
+     -->
+
+    <script>
+
+
+        /*
+        ajax:  
+        空间：服务器中的一块存储位置
+        云服务：实质上就是租赁服务器，所谓的云服务，就是人家的东西。
+        有钱人，买个服务器放家里，就不需要云端了。
+        ajax的好处就是，可以部分更新，而不是更新的时候整个网站都要刷新
+
+
+
+
+
+        */
+
+        /*
+        ajax的使用步骤
+        1. 创建ajax， 核心对象XMLHttpRequest
+        2. 发送请求 open（‘请求方式’， “请求地址”，是否异步）
+        3. 发送请求参数 参数的格式一定是key = value形式的字符串，多个参数以&连接
+            get： 参数写在请求地址后面，以？连接。
+        4. 接收响应
+            readyState（请求的状态）： 0（尚未初始化） 1 （正在发送请求） 2 （请求完毕） 3（正在响应） 4（响应完毕）
+            status（服务器端返回的状态码，404 200（ok） 500（服务器端错误） 301 304
+            onreadystatechange
+            responseText： 获取来自服务器端端文本数据
+        5. get/post 请求的区别
+            （1） 请求参数位置不同
+            （2） post请求需要设置请求头
+            （3）get 的参数会显示在地址栏里，但post不会
+            （4）get请求更快更简单
+            （5）get有参数数量的限制，post没有参数数量的限制
+            （6）post更安全更稳定
+        6.json:
+            JSON.parse(): 将json格式字符串转成对象。/json
+
+        */
+
+
+        //1. 创建ajax核心对象
+
+        function sendRequest() {
+            var xmlhttp = new XMLHttpRequest();
+            var data_input01 = document.getElementById('input01')
+            console.log(data_input01.value)
+            //2. 创建请求get/post 大小写都能识别
+            xmlhttp.open('post', 'my.php', true);
+            //open方法里面有三个参数 （‘请求方式’ ‘请求地址’ ，是否异步）
+            //get请求和post请求这两种方式，是后端决定的，前端来适应它。
+            //前端没有任何选择的余地。
+
+            xmlhttp.setRequestHeader('Content-Type','application/x-www-form-urlencoded')
+            //这句话死记硬背即可
+
+            //3. 发送请求参数 参数的格式一定是key=value形式的字符串，多个参数以&连接
+            xmlhttp.send('hobby=' + data_input01.value)//这个是post发送参数的方式
+            // xmlhttp.send('username = xuchao&psd=123456') 这是post
+            //如果是get，参数写在请求地址后面，以？连接
+            //如果请求方式为post，我们需要主动设置请求头
+            //所谓的请求头，是http里的知识。
+            //现在不需要学习它。
+
+
+
+            xmlhttp.onreadystatechange = function () {
+            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) { //请求成功，返回也成功了
+                var data = xmlhttp.responseText
+                console.log(data)
+                //dom 操作
+                //我想把后端返回的数据渲染到前端
+
+
+                h1txt.innerHTML = data
+
+
+            }
+        }
+        }
+
+
+
+
+
+
+        //4. 接收响应
+        // 
+        /*
+         readyState(请求的状态）
+         0（尚未初始化） 1（正在发送请求） 2（请求完毕） 3（正在响应） 4 （响应完毕）
+         status （服务器端返回的状态码）status（服务器端返回的状态码，404 200（ok） 500（服务器端错误） 301 304 服务器状态码，对于前端来说只需要知道200就行了。
+        onreadystatechange 状态改变的方法
+        responseText服务器端端文本数据
+        */
+
+
+    </script>
+
+</body>
+
+</html>
