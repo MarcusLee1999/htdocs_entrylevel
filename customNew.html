@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DownJacket Creator with Improved Naming</title>
+</head>
+
+<body>
+    <h2>DownJacket Creator</h2>
+
+    <!-- 输入表单 -->
+    <form id="downJacketForm">
+        <input type="text" id="color" placeholder="Color" required>
+        <input type="text" id="size" placeholder="Size" required>
+        <input type="number" id="fillPower" placeholder="Fill Power" required>
+        <button type="submit">Create DownJacket</button>
+    </form>
+
+    <!-- 显示最新的羽绒服信息 -->
+    <div id="latestOutput">
+        <h3>Latest DownJacket</h3>
+    </div>
+
+    <!-- 历史记录 -->
+    <div id="history">
+        <h3>History</h3>
+    </div>
+
+    <script>
+        function Clothes(_color, _size) {
+            this.color = _color;
+            this.size = _size;
+        }
+
+        Clothes.prototype.getClothesDescription = function () {
+            return `This is a ${this.size} size, ${this.color} piece of clothing.`;
+        }
+
+        function DownJacket(_color, _size, _fillPower) {
+            Clothes.call(this, _color, _size);
+            this.fillPower = _fillPower;
+        }
+
+        DownJacket.prototype = Object.create(Clothes.prototype);
+        DownJacket.prototype.constructor = DownJacket;
+
+        DownJacket.prototype.getDownJacketDescription = function () {
+            return `This down jacket has a fill power of ${this.fillPower}. It's a ${this.size} size, ${this.color} piece of clothing.`;
+        }
+
+        function customNew(constructor, ...args) {
+            const obj = {};
+            Object.setPrototypeOf(obj, constructor.prototype);
+            const result = constructor.apply(obj, args);
+            return result instanceof Object ? result : obj;
+        }
+
+        document.getElementById('downJacketForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            // 获取表单输入值
+            const color = document.getElementById('color').value;
+            const size = document.getElementById('size').value;
+            const fillPower = document.getElementById('fillPower').value;
+
+            // 创建 DownJacket 实例
+            const downJacket = customNew(DownJacket, color, size, fillPower);
+
+            // 更新最新的羽绒服信息
+            const latestOutput = document.getElementById('latestOutput');
+            latestOutput.innerHTML = `<h3>Latest DownJacket</h3>${downJacket.getDownJacketDescription()}`;
+
+            // 添加到历史记录
+            const history = document.getElementById('history');
+            history.innerHTML += `<p>${downJacket.getDownJacketDescription()}</p>`;
+
+            // 重置表单
+            document.getElementById('downJacketForm').reset();
+        });
+    </script>
+</body>
+
+</html>

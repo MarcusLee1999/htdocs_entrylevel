@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <select name="" id="state">
+        <option value="select your state">select your state</option>
+        <option value="SA">South Australia</option>
+        <option value="NSW">New South Wales</option>
+        <option value="VIC">Victoria</option>
+    </select>
+
+    <select name="" id="city">
+        <option value="select your city">select your city</option>
+    </select>
+
+    <div id="text1"></div>
+
+
+    <script>
+        document.getElementById('state').addEventListener('change',function(){
+            var stateValue = this.value //获取选定的州。 就是一旦到了某个option，stateValue这个数就会改变。，
+
+            if (stateValue != 'select your state'){
+                var xmlhttp = new XMLHttpRequest()
+                xmlhttp.open('get', 'state.php?stateValue=' + stateValue , true)
+                xmlhttp.send()
+
+                xmlhttp.onreadystatechange = function (){
+                    if (xmlhttp.readyState == 4 && xmlhttp.status == 200){
+                        var cities = xmlhttp.responseText.split(',');
+                        var citySelect = document.getElementById('city')
+                        citySelect.innerHTML = '<option value = "select your city">select your city</option>'
+
+                        for (var i = 0; i < cities.length; i++) {
+                            var opt = document.createElement('option');
+                            opt.value = cities [i];
+                            opt.innerHTML = cities[i];
+                            citySelect.appendChild(opt);
+                        }
+                    }
+                }
+            } else{
+                //如果选择的是默认项，重置城市下拉菜单
+                document.getElementById('city').innerHTML = '<option value = "select your city">select your city</option>'
+            }
+        })
+    </script>
+
+<!-- 当一个程序员构思并编写上述代码时，他们的思考过程可能会遵循以下步骤：
+
+### 1. 理解需求
+首先，程序员会明确这段代码的目标：创建一个依赖于用户选择的动态更新的城市列表。用户首先从一个州的下拉菜单中选择一个州，然后第二个下拉菜单会基于所选州展示相应的城市列表。
+
+### 2. 规划结构
+接下来，程序员会规划HTML结构，确保有两个下拉菜单：一个用于州（`#state`），另一个用于城市（`#city`）。他们会使用`<select>`标签来实现这一点，确保每个选择都有一个默认选项以及几个具体选项。
+
+### 3. 编写交互逻辑
+程序员知道，要实现动态更新的城市列表，需要在用户更改州的选择时触发一个事件。因此，他们会给州的下拉菜单添加一个`change`事件监听器，当选择改变时，执行一段代码。
+
+### 4. 实现数据请求
+思考如何从服务器获取数据，程序员决定使用`XMLHttpRequest`来向`state.php`发送一个GET请求，携带用户选择的州作为查询参数。他们知道要通过查询字符串（`?stateValue=`）来传递这个值，以便PHP脚本可以根据这个值返回相应的城市列表。
+
+### 5. 处理响应数据
+一旦接收到服务器的响应，程序员打算将响应文本（城市列表）分割成数组，然后遍历这个数组，为每个城市创建一个新的`<option>`元素，并添加到城市的下拉菜单中。他们考虑到了先清空城市下拉菜单中的既有内容，以确保不会与之前的选择混淆。
+
+### 6. 考虑边界情况
+程序员还会考虑用户可能重新选择“选择您的州”这个默认选项的情况。在这种情况下，他们决定重置城市下拉菜单，以避免显示不相关的城市选项。
+
+### 7. 编码风格和细节
+在编写代码的过程中，程序员会注意到一些细节和编码习惯，比如使用恰当的变量名以提高代码的可读性，以及确保所有操作都在正确的条件判断下执行。
+
+### 8. 测试和调试
+最后，程序员会在浏览器中测试这段代码，确保它按预期工作。如果遇到问题，他们会使用浏览器的开发者工具来调试，查看网络请求的状态，检查任何可能的错误，并逐步解决问题。
+
+通过这个过程，程序员不仅仅是在编码，而是在不断地解决问题、优化解决方案，并确保最终的用户体验尽可能地好。这个过程体现了程序员在实际工作中的思维方式：理解问题、规划解决方案、细致实现，然后测试和优化。
+ -->
+
+
+</body>
+
+</html>

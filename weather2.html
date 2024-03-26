@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>weather check</title>
+</head>
+
+<body>
+    <input type="text" id="cityInput" placeholder="输入城市名">
+    <button onclick="getWeather()">查询天气</button>
+    <div id="weatherResult"></div>
+
+    <script>
+        function getWeather() {
+            var city = document.getElementById('cityInput').value;
+            var API_KEY = 'cc99d6d097cc1797cd0c18e63ceaf3c6';
+            // 修正 URL，添加正确的参数名称
+            var url = 'https://restapi.amap.com/v3/weather/weatherInfo?extensions=all&city=' + city + '&key=' + API_KEY + '';
+
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', url, true);
+
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    var data = JSON.parse(xhr.responseText);
+                    console.log(data)
+                    // 假设我们想展示天气状态，需要根据返回的 JSON 结构进行访问
+                    if (data && data.forecasts && data.forecasts.length > 0) {
+                        var weatherInfo = data.forecasts[0].casts; // 获取第一个结果
+                        var weathercity = data.forecasts[0].city
+                        console.log(weatherInfo)
+                        document.getElementById('weatherResult').innerHTML = document.getElementById('weatherResult').innerHTML =
+                        'city: ' +     weathercity + '<br>'+
+                        'time: ' + weatherInfo[0].date + ' daytemp: ' + weatherInfo[0].daytemp + ' nighttemp: ' +
+                            weatherInfo[0].nighttemp + '<br>' + 'time: ' + weatherInfo[1].date + ' daytemp: ' + weatherInfo[1].daytemp + ' nighttemp: ' +
+                            weatherInfo[1].nighttemp + '<br>' + 'time: ' + weatherInfo[2].date + ' daytemp: ' + weatherInfo[2].daytemp + ' nighttemp: ' +
+                            weatherInfo[2].nighttemp + '<br>' + 'time: ' + weatherInfo[3].date + ' daytemp: ' + weatherInfo[3].daytemp + ' nighttemp: ' +
+                            weatherInfo[3].nighttemp;
+
+                    } else {
+                        document.getElementById('weatherResult').innerHTML = "无法获取天气信息";
+                    }
+                } else if (xhr.readyState == 4) {
+                    document.getElementById('weatherResult').innerHTML = "没有该城市信息";
+                }
+            };
+
+            xhr.send();
+        }
+    </script>
+
+</body>
+
+</html>
