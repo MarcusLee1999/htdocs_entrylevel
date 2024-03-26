@@ -75,37 +75,43 @@
             var data_input01 = document.getElementById('input01')
             console.log(data_input01.value)
             //2. 创建请求get/post 大小写都能识别
-            xmlhttp.open('post', 'my.php', true);
+            xmlhttp.open('get', 'my.php?hobby=' + data_input01.value, true);
             //open方法里面有三个参数 （‘请求方式’ ‘请求地址’ ，是否异步）
             //get请求和post请求这两种方式，是后端决定的，前端来适应它。
             //前端没有任何选择的余地。
 
-            xmlhttp.setRequestHeader('Content-Type','application/x-www-form-urlencoded')
-            //这句话死记硬背即可
+
 
             //3. 发送请求参数 参数的格式一定是key=value形式的字符串，多个参数以&连接
-            xmlhttp.send('hobby=' + data_input01.value)//这个是post发送参数的方式
+            xmlhttp.send()//这个是post发送参数的方式
             // xmlhttp.send('username = xuchao&psd=123456') 这是post
             //如果是get，参数写在请求地址后面，以？连接
-            //如果请求方式为post，我们需要主动设置请求头
-            //所谓的请求头，是http里的知识。
-            //现在不需要学习它。
-
-
-
             xmlhttp.onreadystatechange = function () {
-            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) { //请求成功，返回也成功了
-                var data = xmlhttp.responseText
-                console.log(data)
-                //dom 操作
-                //我想把后端返回的数据渲染到前端
+                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) { //请求成功，返回也成功了
+                    var data = xmlhttp.responseText
+                    //XML也是一种数据格式，json也是一种数据格式。
+                    //但是XML已经被淘汰了。
+
+                    var data2= JSON.parse(data)
+                    console.log(data2.name)
+                    //dom 操作
+                    //我想把后端返回的数据渲染到前端
 
 
-                h1txt.innerHTML = data
+                    h1txt.innerHTML = data2.name
+
+                    //前端后端，交互的数据，全部都是json格式。
+                    //json是一个数据格式。
+                    //json并不复杂。
+                    //json知识一个存储和交换文本信息的语法。
+                    //其实就是一种文本数据交换格式。
+                    //json是独立于语言的。
+                    //json是使用javascript的语法来描述数据对象。但它并不是javascript
 
 
+
+                }
             }
-        }
         }
 
 
