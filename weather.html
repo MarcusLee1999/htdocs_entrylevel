@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>weather check</title>
+</head>
+
+<body>
+    <input type="text" id="cityInput" placeholder="输入城市名">
+    <button onclick="getWeather()">查询天气</button>
+    <div id="weatherResult"></div>
+
+    <script>
+        function getWeather() {
+            var city = document.getElementById('cityInput').value;
+            var API_KEY = 'cc99d6d097cc1797cd0c18e63ceaf3c6';
+            // 修正 URL，添加正确的参数名称
+            var url = 'https://restapi.amap.com/v3/weather/weatherInfo?city=' + city + '&key=' + API_KEY;
+
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', url, true);
+
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4 && xhr.status == 200) {
+                    var data = JSON.parse(xhr.responseText);
+                    console.log(data)
+                    // 假设我们想展示天气状态，需要根据返回的 JSON 结构进行访问
+                    if (data && data.lives && data.lives.length > 0) {
+                        var weatherInfo = data.lives[0]; // 获取第一个结果
+                        console.log(weatherInfo)
+                        document.getElementById('weatherResult').innerHTML ='时间：'+ weatherInfo.reporttime+ '<br>天气：' + weatherInfo.weather + '<br>温度：' + weatherInfo.temperature + '℃';
+                    } else {
+                        document.getElementById('weatherResult').innerHTML = "无法获取天气信息";
+                    }
+                } else if (xhr.readyState == 4) {
+                    document.getElementById('weatherResult').innerHTML = "没有该城市信息";
+                }
+            };
+
+            xhr.send();
+        }
+    </script>
+
+</body>
+
+</html>
